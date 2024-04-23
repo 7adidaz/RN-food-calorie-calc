@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, Image, StyleSheet, Text, View } from 'react-native';
 import { ResultProps } from '../types/navigatorTypes';
-import {upload} from 'cloudinary-react-native';
+import { upload } from 'cloudinary-react-native';
 import { options, cloud } from '../cloud/cloudinary';
 import styles from '../styles/resultStyles';
 import model from '../cloud/model';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import calories from '../cloud/calorieNinjas';
 
 export default function Result({ navigation, route }: ResultProps) {
@@ -13,43 +13,47 @@ export default function Result({ navigation, route }: ResultProps) {
   const [url, setUrl] = useState<string | null>('');
   const [items, setItems] = useState<string[] | null>([]);
 
-  const handleUpload = async () => {
-    await upload(cloud, {
-      file: image,
-      options: options,
-      callback: async(error, result) => {
-        if (error) {
-          console.log('error__:', error);
-          return;
-        }
-        if (!result) { return; }
-        console.log('res__:', result);
-        setUrl(result.url);
-      },
-    });
+  const handleModel = async () => {
+    if (!image.base64) return;
+    const res = await model(image.base64);
+    setItems(res);
   };
 
-  const handleModel = async () => {
-    if (!url) { return; }
-    const res = await model(url);
-    setItems(res);
-  }
   const handleCalories = async () => {
-    if (!items) { return; }
+    if (!items) return;
+    
     await calories(items);
   };
-  const goToHistory = () => {
+
+  useEffect(() => {
+    const fetch = async () => { 
+      await handleCalories();
+    };
+    fetch();
+  }, [items]);
+
+  const goToHistory = async () => {
+    if (!items) return;
+    // await handleUpload();
+    await handleModel();
+    await handleCalories();
+
     navigation.navigate('History');
+  };
+
+  const handleTakeAnotherPicture = () => {
+    navigation.navigate('Camera');
   };
 
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={{ uri: image }} />
+      <Image style={styles.image} source={{ uri: image.uri }} />
       <View style={styles.buttonContainer}>
-        <Button title="save" onPress={goToHistory} />
-        <Button title="upload" onPress={handleUpload} />
-        <Button title="model" onPress={handleModel} />
-        <Button title="calories" onPress={handleCalories} />
+        <Button title="Use" onPress={goToHistory} />
+        <Button
+          title="Take Another Picture"
+          onPress={handleTakeAnotherPicture}
+        />
         <StatusBar style="auto" />
       </View>
     </View>

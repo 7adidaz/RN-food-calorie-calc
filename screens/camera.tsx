@@ -1,6 +1,6 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, View } from 'react-native';
 import { CameraProps } from '../types/navigatorTypes';
 import styles from '../styles/cameraStyles'
 import CameraPermissions from '../components/cameraPermission';
@@ -26,9 +26,11 @@ export default function CameraScreen ({navigation}: CameraProps) {
 
   async function capture () {
     if (!camera) return;
-    const res = await camera.takePictureAsync();
+    const res = await camera.takePictureAsync({
+      base64: true
+    });
     navigation.navigate('Result', {
-      image: res.uri,
+      image: res,
     });
   }
 

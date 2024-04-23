@@ -1,10 +1,11 @@
-export default async function model(url: string) {
+export default async function model(base64: string) {
     try {
         const PAT = process.env.EXPO_PUBLIC_PAT;
         const userId = 'clarifai';
         const appId = 'main';
         const modelId = 'general-image-detection';
         const modelVersionId = '1580bb1932594c93b7e2e04456af7c6f';
+        // const imageUrl = 'https://samples.clarifai.com/metro-north.jpg';
 
         const raw = JSON.stringify({
             "user_app_id": {
@@ -15,14 +16,15 @@ export default async function model(url: string) {
                 {
                     "data": {
                         "image": {
-                            "url": url
+                            // "url": imageUrl
+                            "base64": base64
                             // "base64": image as base64 
                         }
                     }
                 }
             ]
         });
-        console.log('url__', url);
+        // console.log('url__', url);
 
         const requestOptions = {
             method: 'POST',
