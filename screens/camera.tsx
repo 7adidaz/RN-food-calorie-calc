@@ -1,7 +1,9 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { CameraProps } from './types/navigatorTypes';
+import { CameraProps } from '../types/navigatorTypes';
+import styles from '../styles/cameraStyles'
+import CameraPermissions from '../components/cameraPermission';
 
 export default function CameraScreen ({navigation}: CameraProps) {
   const [camera, setCamera] = useState<Camera | null>(null);
@@ -15,12 +17,7 @@ export default function CameraScreen ({navigation}: CameraProps) {
 
   if (!permission.granted) {
     // Camera permissions are not granted yet
-    return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
+    return <CameraPermissions/>
   }
 
   function toggleCameraType() {
@@ -53,29 +50,3 @@ export default function CameraScreen ({navigation}: CameraProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  camera: {
-    flex: 1
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-});

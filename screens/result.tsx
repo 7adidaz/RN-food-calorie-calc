@@ -1,40 +1,43 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, Image, StyleSheet, Text, View } from 'react-native';
-import { ResultProps } from './types/navigatorTypes';
-import { Dimensions } from 'react-native';
-import { Cloudinary } from '@cloudinary/url-gen';
+import { ResultProps } from '../types/navigatorTypes';
 import {upload} from 'cloudinary-react-native';
+import { options, cloud } from '../cloud/cloudinary';
+import styles from '../styles/resultStyles';
+import model from '../cloud/model';
+import { useState } from 'react';
+import calories from '../cloud/calorieNinjas';
 
 export default function Result({ navigation, route }: ResultProps) {
   const { image } = route.params;
-
-  const cloud = new Cloudinary({
-    cloud: {
-      cloudName: process.env.EXPO_PUBLIC_CLOUD_NAME,
-    },
-    url: {
-      secure: true,
-    },
-  });
-  const options = {
-    upload_preset: process.env.EXPO_PUBLIC_UPLOAD_PRESET,
-    unsigned: true,
-  };
+  const [url, setUrl] = useState<string | null>('');
+  const [items, setItems] = useState<string[] | null>([]);
 
   const handleUpload = async () => {
     await upload(cloud, {
       file: image,
       options: options,
-      callback: (error, result) => {
+      callback: async(error, result) => {
         if (error) {
           console.log('error__:', error);
           return;
         }
+        if (!result) { return; }
         console.log('res__:', result);
+        setUrl(result.url);
       },
     });
   };
 
+  const handleModel = async () => {
+    if (!url) { return; }
+    const res = await model(url);
+    setItems(res);
+  }
+  const handleCalories = async () => {
+    if (!items) { return; }
+    await calories(items);
+  };
   const goToHistory = () => {
     navigation.navigate('History');
   };
@@ -42,22 +45,13 @@ export default function Result({ navigation, route }: ResultProps) {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={{ uri: image }} />
-      <Button title="save" onPress={goToHistory} />
-      <Button title="upload" onPress={handleUpload} />
-      <StatusBar style="auto" />
+      <View style={styles.buttonContainer}>
+        <Button title="save" onPress={goToHistory} />
+        <Button title="upload" onPress={handleUpload} />
+        <Button title="model" onPress={handleModel} />
+        <Button title="calories" onPress={handleCalories} />
+        <StatusBar style="auto" />
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: Dimensions.get('window').width - 100,
-    height: Dimensions.get('window').height - 100,
-  },
-});

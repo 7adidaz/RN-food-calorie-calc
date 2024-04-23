@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { HistoryProps } from './types/navigatorTypes';
+import { HistoryProps } from '../types/navigatorTypes';
+import styles from '../styles/historyStyles';
 
 export default function History ({navigation}: HistoryProps) {
     const goToCamera = () => {
@@ -17,12 +18,3 @@ export default function History ({navigation}: HistoryProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

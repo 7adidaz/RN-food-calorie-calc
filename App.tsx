@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CameraScreen from './screens/camera';
 import History from './screens/history';
 import Result from './screens/result';
-import { RootStackParamList } from './screens/types/navigatorTypes';
+import { RootStackParamList } from './types/navigatorTypes';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
