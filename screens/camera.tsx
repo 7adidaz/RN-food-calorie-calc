@@ -1,9 +1,11 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
 import { Button, View } from 'react-native';
-import { CameraProps } from '../types/navigatorTypes';
+import { CameraProps } from '../types/types';
 import styles from '../styles/cameraStyles'
 import CameraPermissions from '../components/cameraPermission';
+import { deleteAsync, getInfoAsync } from 'expo-file-system';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 export default function CameraScreen ({navigation}: CameraProps) {
   const [camera, setCamera] = useState<Camera | null>(null);
@@ -24,13 +26,27 @@ export default function CameraScreen ({navigation}: CameraProps) {
     setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
   }
 
-  async function capture () {
+  async function capture() {
     if (!camera) return;
     const res = await camera.takePictureAsync({
-      base64: true
+      base64: true,
+      quality: 1,
     });
+
+    console.log('before: ', await getInfoAsync(res.uri));
+    const manipResult = await ImageManipulator.manipulateAsync(
+      res.uri,
+      [{ flip: ImageManipulator.FlipType.Vertical }],
+      { compress: 0.4, format: ImageManipulator.SaveFormat.JPEG, base64: true} 
+    );
+    deleteAsync(res.uri, {idempotent: true});
+
+    console.log('before: ', await getInfoAsync(manipResult.uri));
     navigation.navigate('Result', {
-      image: res,
+      image: {
+        uri: manipResult.uri,
+        base64: manipResult?.base64 || '',
+      },
     });
   }
 
