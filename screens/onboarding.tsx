@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   View,
@@ -16,56 +16,104 @@ export default function Onboarding({ navigation }: OnboardingProps) {
   const MIN_AGE = 18;
   const MAX_AGE = 90;
 
-  const items = Array.from({ length: MAX_AGE - MIN_AGE + 1 }, (_, i) => (
+  const ageItems = Array.from({ length: MAX_AGE - MIN_AGE + 1 }, (_, i) => (
     <Picker.Item key={i} value={i + MIN_AGE} label={`${i + MIN_AGE}`} />
   ));
 
+  const MAX_HEIGHT = 250;
+  const MIN_HEIGHT = 100;
+  const heightItems = Array.from(
+    { length: MAX_HEIGHT - MIN_HEIGHT + 1 },
+    (_, i) => (
+      <Picker.Item key={i} value={i + MAX_HEIGHT} label={`${i + MIN_HEIGHT}`} />
+    )
+  );
+
+  const MAX_WEIGHT = 300;
+  const MIN_WEIGHT = 30;
+  const weightItems = Array.from(
+    { length: MAX_WEIGHT - MIN_WEIGHT + 1 },
+    (_, i) => (
+      <Picker.Item key={i} value={i + MAX_WEIGHT} label={`${i + MIN_WEIGHT}`} />
+    )
+  );
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const jsonValue = await AsyncStorage.getItem("userData");
+      if (jsonValue != null) {
+        navigation.navigate("History");
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   const handleSaveUserData = async (data: userData) => {
     await AsyncStorage.setItem("userData", JSON.stringify(data));
-    console.log("saved");
     navigation.navigate("History");
   };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View marginT-100 center>
-        <TextField text50 placeholder="name" grey10 />
+      <View className=" flex gap-2 mt-4 p-8  ">
+        <TextField
+          floatingPlaceholder
+          $backgroundDark
+          placeholder="name"
+          className="mb-3"
+          onChangeText={(v) => setUserData({ ...userData, name: v })}
+        />
 
         <Picker
+          floatingPlaceholder
           label="Age"
-          placeholder="choose your age"
+          placeholder="Age"
           useWheelPicker
+          defaultValue=""
           value={userData.age}
-          onChange={(v) => setUserData({ ...userData, age: Number(v) || 18 })}
+          onChange={(v) => setUserData({ ...userData, age: Number(v) })}
+          className="mb-3"
         >
-          {items}
+          {ageItems}
         </Picker>
 
-        <NumberInput
-          initialNumber={170}
-          onChangeNumber={(v) =>
-            setUserData({ ...userData, height: Number(v.userInput) })
-          }
-          fractionDigits={1}
-          leadingText="Height: "
-        />
-        <NumberInput
-          initialNumber={170}
-          onChangeNumber={(v) =>
-            setUserData({ ...userData, weight: Number(v.userInput) })
-          }
-          fractionDigits={1}
-          leadingText="Weight: "
-        />
         <Picker
-          label="Activity Level"
-          placeholder="choose your Activity Level"
+          floatingPlaceholder
+          label="Height"
+          placeholder="Height"
           useWheelPicker
-          value={userData.age}
+          defaultValue=""
+          value={userData.height}
+          onChange={(v) => setUserData({ ...userData, height: Number(v) })}
+          className="mb-3"
+        >
+          {heightItems}
+        </Picker>
+
+        <Picker
+          floatingPlaceholder
+          label="Weight"
+          placeholder="Weight"
+          useWheelPicker
+          defaultValue=""
+          value={userData.weight}
+          onChange={(v) => setUserData({ ...userData, weight: Number(v) })}
+          className="mb-3"
+        >
+          {heightItems}
+        </Picker>
+
+        <Picker
+          floatingPlaceholder
+          placeholder=" Activity Level"
+          useWheelPicker
+          value={userData.activityLevel}
+          className="mb-3"
           onChange={(v) =>
             setUserData({
               ...userData,
-              activityLevel: (v?.toString() || "moderate") as
+              activityLevel: (v || "moderate") as
                 | "light"
                 | "moderate"
                 | "active",

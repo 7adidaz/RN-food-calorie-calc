@@ -7,6 +7,7 @@ import History from "./screens/history";
 import Result from "./screens/result";
 import { RootStackParamList } from "./types/types";
 import Onboarding from "./screens/onboarding";
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {

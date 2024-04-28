@@ -3,7 +3,7 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import { HistoryProps, userData } from "../types/types";
 import styles from "../styles/historyStyles";
 import DatePicker from "../components/datePicker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Onboarding from "./onboarding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -16,10 +16,17 @@ export default function History({ navigation }: HistoryProps) {
     if (!jsonValue) {
       navigation.navigate("Onboarding");
     }
+
     setUserData(jsonValue != null ? JSON.parse(jsonValue) : null);
   };
 
-  fetchUserData();
+  useEffect(() => {
+    fetchUserData();
+
+    console.log("USER DATA __", userData);
+  }, [userData]);
+
+  // fetchUserData();
 
   const goToCamera = () => {
     navigation.navigate("Camera");
