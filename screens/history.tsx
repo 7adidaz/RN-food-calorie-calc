@@ -37,13 +37,13 @@ export default function History({ navigation }: HistoryProps) {
   };
 
   return (
-    <View className="flex">
-      <View className="flex  p-5 bg-slate-50 h-full">
-        <View className="flex flex-row justify-between">
-          <DatePicker date={date} setDate={setDate} />
+    <View>
+      <View className="flex bg-slate-50 h-full w-full">
+        <View className="flex flex-row justify-between w-full">
+          <DatePicker goToCamera={goToCamera} date={date} setDate={setDate} />
         </View>
-        <Text onPress={goToonboarding}>THIS IS HISTORY PAGE</Text>
-        <Button title="Go to Camera" onPress={goToCamera} />
+        {/* <Text onPress={goToonboarding}>THIS IS HISTORY PAGE</Text>
+        <Button title="Go to Camera" onPress={goToCamera} /> */}
       </View>
       <StatusBar style="auto" />
     </View>

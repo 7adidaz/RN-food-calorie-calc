@@ -1,5 +1,5 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Calendar, Iconoir } from "iconoir-react-native";
+import { Calendar, Camera, Iconoir } from "iconoir-react-native";
 import React, { useState } from "react";
 import {
   SafeAreaView,
@@ -10,13 +10,21 @@ import {
 } from "react-native";
 import styles from "../styles/onBoardingStyles";
 import { red } from "@cloudinary/url-gen/actions/adjust";
+import { useNavigation } from "@react-navigation/native";
 
 interface PickDateProps {
   date: Date;
   setDate: (date: Date) => void;
+  goToCamera: () => void;
 }
 
-export default function DatePicker({ date, setDate }: PickDateProps) {
+export default function DatePicker({
+  date,
+  setDate,
+  goToCamera,
+}: PickDateProps) {
+  const navigation = useNavigation();
+
   const [show, setShow] = useState(false);
 
   const onChange = (event: any, selectedDate: any) => {
@@ -32,19 +40,25 @@ export default function DatePicker({ date, setDate }: PickDateProps) {
 
   return (
     <SafeAreaView>
-      <View className="flex flex-row justify-between p-4 align-top content-start items-center">
+      <View className="flex p-4 justify-between flex-row items-center w-screen ">
         <TouchableOpacity
           onPress={showDatepicker}
-          className=" w-fit bg-orange-700 flex flex-row items-center p-2 rounded-full px-4"
+          className="   border-orange-600 border-2	  flex flex-row items-center p-2 rounded-full px-4"
         >
-          <Calendar color="white" height={16} width={16} />
-          <Text className="text-white">
+          <Calendar color="black" height={16} width={16} />
+          <Text className="text-black">
             {" "}
             {date.toLocaleString("en-US", { month: "short", day: "numeric" })}
           </Text>
         </TouchableOpacity>
 
-        <Text>dsds</Text>
+        <TouchableOpacity
+          onPress={goToCamera}
+          className="  bg-orange-700  flex flex-row items-center p-2 rounded-full px-4"
+        >
+          <Camera color="white" height={16} width={16} />
+          <Text className="text-white"> Add</Text>
+        </TouchableOpacity>
       </View>
 
       {show && (
