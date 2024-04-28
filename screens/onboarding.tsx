@@ -42,6 +42,7 @@ export default function Onboarding({ navigation }: OnboardingProps) {
     const fetchUserData = async () => {
       const jsonValue = await AsyncStorage.getItem("userData");
       if (jsonValue != null) {
+        // console.log("USER DATA __", jsonValue);
         navigation.navigate("History");
       }
     };
@@ -55,8 +56,8 @@ export default function Onboarding({ navigation }: OnboardingProps) {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View className=" flex gap-2 mt-4 p-8  ">
+    <GestureHandlerRootView>
+      <View className=" flex gap-2 mt-4 px-9 py-4 ">
         <TextField
           floatingPlaceholder
           $backgroundDark
