@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, { Component, useState } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   View,
   TextField,
@@ -7,9 +7,9 @@ import {
   Button,
   Picker,
   NumberInput,
-} from 'react-native-ui-lib';
-import { OnboardingProps, userData, userDefaultData } from '../types/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+} from "react-native-ui-lib";
+import { OnboardingProps, userData, userDefaultData } from "../types/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Onboarding({ navigation }: OnboardingProps) {
   const [userData, setUserData] = useState<userData>(userDefaultData);
@@ -21,9 +21,9 @@ export default function Onboarding({ navigation }: OnboardingProps) {
   ));
 
   const handleSaveUserData = async (data: userData) => {
-    await AsyncStorage.setItem('userData', JSON.stringify(data));
-    console.log('saved');
-    navigation.navigate('History');
+    await AsyncStorage.setItem("userData", JSON.stringify(data));
+    console.log("saved");
+    navigation.navigate("History");
   };
 
   return (
@@ -65,10 +65,10 @@ export default function Onboarding({ navigation }: OnboardingProps) {
           onChange={(v) =>
             setUserData({
               ...userData,
-              activityLevel: (v?.toString() || 'moderate') as
-                | 'light'
-                | 'moderate'
-                | 'active',
+              activityLevel: (v?.toString() || "moderate") as
+                | "light"
+                | "moderate"
+                | "active",
             })
           }
         >
