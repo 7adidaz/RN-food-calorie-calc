@@ -46,7 +46,9 @@ const FoodItem: React.FC<FoodItemProps> = ({ item, onUpdate }) => {
           keyboardType="numeric"
           style={styles.servingInput}
           placeholder="Enter serving size"
+          className="ml-auto mr-2 max-w-xs w-32"
         />
+        <Text>g</Text>
       </View>
     </View>
   );

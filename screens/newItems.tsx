@@ -125,16 +125,9 @@ export default function NewItems({ navigation, route }: NewItemsProps) {
           white
           background-orange30
           label="Add"
-          className=" mt-auto"
+          className="mt-auto"
         />
       </View>
     </View>
   );
 }
-
-// {updatedItems.map((item, index) => (
-//     <Text key={index}>
-//       {JSON.stringify(item)}
-//       {/* {`${item.name}: ${item.total_calories} Calories, ${item.protein_g}g Protein, ${item.fat_total_g}g Fat, ${item.carbohydrates_total_g}g Carbohydrates, ${item.total_serving_size}g Serving Size`} */}
-//     </Text>
-//   ))}
