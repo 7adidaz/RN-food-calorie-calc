@@ -13,6 +13,9 @@ export type RootStackParamList = {
     image: CameraResult;
   };
   Onboarding: undefined;
+  NewItems: {
+    data: any;
+  };
 };
 
 export type HistoryProps = NativeStackScreenProps<
@@ -21,6 +24,10 @@ export type HistoryProps = NativeStackScreenProps<
 >;
 export type CameraProps = NativeStackScreenProps<RootStackParamList, "Camera">;
 export type ResultProps = NativeStackScreenProps<RootStackParamList, "Result">;
+export type NewItemsProps = NativeStackScreenProps<
+  RootStackParamList,
+  "NewItems"
+>;
 export type OnboardingProps = NativeStackScreenProps<
   RootStackParamList,
   "Onboarding"
