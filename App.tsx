@@ -7,6 +7,7 @@ import History from "./screens/history";
 import Result from "./screens/result";
 import { RootStackParamList } from "./types/types";
 import Onboarding from "./screens/onboarding";
+import NewItems from "./screens/newItems";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -18,6 +19,7 @@ function App() {
         <Stack.Screen name="Camera" component={CameraScreen} />
         <Stack.Screen name="Result" component={Result} />
         <Stack.Screen name="Onboarding" component={Onboarding} />
+        <Stack.Screen name="NewItems" component={NewItems} />
       </Stack.Navigator>
     </NavigationContainer>
   );
