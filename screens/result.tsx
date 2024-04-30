@@ -35,9 +35,8 @@ export default function Result({ navigation, route }: ResultProps) {
         const data = await calories(items);
         console.log("data_inside useeffect_", data);
         if (!data) return;
-        if (data) {
+        if (data.items && data.items.length > 0) {
           setcal(data);
-
           navigation.navigate("NewItems", {
             data,
           });

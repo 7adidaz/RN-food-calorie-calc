@@ -1,13 +1,13 @@
-import { Camera, CameraType } from 'expo-camera';
-import { useState } from 'react';
-import { Button, View } from 'react-native';
-import { CameraProps } from '../types/types';
-import styles from '../styles/cameraStyles'
-import CameraPermissions from '../components/cameraPermission';
-import { deleteAsync, getInfoAsync } from 'expo-file-system';
-import * as ImageManipulator from 'expo-image-manipulator';
+import { Camera, CameraType } from "expo-camera";
+import { useState } from "react";
+import { Button, View } from "react-native";
+import { CameraProps } from "../types/types";
+import styles from "../styles/cameraStyles";
+import CameraPermissions from "../components/cameraPermission";
+import { deleteAsync, getInfoAsync } from "expo-file-system";
+import * as ImageManipulator from "expo-image-manipulator";
 
-export default function CameraScreen ({navigation}: CameraProps) {
+export default function CameraScreen({ navigation }: CameraProps) {
   const [camera, setCamera] = useState<Camera | null>(null);
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -19,11 +19,13 @@ export default function CameraScreen ({navigation}: CameraProps) {
 
   if (!permission.granted) {
     // Camera permissions are not granted yet
-    return <CameraPermissions/>
+    return <CameraPermissions />;
   }
 
   function toggleCameraType() {
-    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+    setType((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
   }
 
   async function capture() {
@@ -33,19 +35,19 @@ export default function CameraScreen ({navigation}: CameraProps) {
       quality: 1,
     });
 
-    console.log('before: ', await getInfoAsync(res.uri));
+    console.log("before: ", await getInfoAsync(res.uri));
     const manipResult = await ImageManipulator.manipulateAsync(
       res.uri,
       [{ flip: ImageManipulator.FlipType.Vertical }],
-      { compress: 0.4, format: ImageManipulator.SaveFormat.JPEG, base64: true} 
+      { compress: 0.6, format: ImageManipulator.SaveFormat.JPEG, base64: true }
     );
-    deleteAsync(res.uri, {idempotent: true});
+    deleteAsync(res.uri, { idempotent: true });
 
-    console.log('before: ', await getInfoAsync(manipResult.uri));
-    navigation.navigate('Result', {
+    console.log("before: ", await getInfoAsync(manipResult.uri));
+    navigation.navigate("Result", {
       image: {
         uri: manipResult.uri,
-        base64: manipResult?.base64 || '',
+        base64: manipResult?.base64 || "",
       },
     });
   }
@@ -53,7 +55,7 @@ export default function CameraScreen ({navigation}: CameraProps) {
   return (
     <View style={styles.container}>
       <Camera
-        ratio={'16:9'}
+        ratio={"16:9"}
         style={styles.camera}
         type={type}
         ref={(ref) => setCamera(ref)}
