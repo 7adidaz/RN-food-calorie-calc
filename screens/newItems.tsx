@@ -3,6 +3,7 @@ import { NewItemsProps } from "../types/types";
 import { useState, useEffect } from "react";
 import FoodItem from "../components/foodItem";
 import { Button } from "react-native-ui-lib";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function NewItems({ navigation, route }: NewItemsProps) {
   const [items, setItems] = useState(route.params.data.items);
@@ -102,6 +103,16 @@ export default function NewItems({ navigation, route }: NewItemsProps) {
     updateItems();
   }, [items]);
 
+  const handlePress = async () => {
+    console.log("updatedItems", updatedItems);
+    const todayDate = new Date().toLocaleString().split(",")[0];
+    const rawData = await AsyncStorage.getItem(todayDate);
+    const newData = [...JSON.parse(rawData || "[]"), ...updatedItems];
+    await AsyncStorage.setItem(todayDate, JSON.stringify(newData));
+
+    navigation.navigate("History");
+  };
+
   return (
     <View className="flex h-full">
       <ScrollView className="p-3">
@@ -126,6 +137,7 @@ export default function NewItems({ navigation, route }: NewItemsProps) {
           background-orange30
           label="Add"
           className="mt-auto"
+          onPress={handlePress}
         />
       </View>
     </View>
