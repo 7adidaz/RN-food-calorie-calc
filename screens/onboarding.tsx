@@ -1,12 +1,10 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   View,
   TextField,
-  Text,
   Button,
   Picker,
-  NumberInput,
 } from "react-native-ui-lib";
 import { OnboardingProps, userData, userDefaultData } from "../types/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -102,7 +100,7 @@ export default function Onboarding({ navigation }: OnboardingProps) {
           onChange={(v) => setUserData({ ...userData, weight: Number(v) })}
           className="mb-3"
         >
-          {heightItems}
+          {weightItems}
         </Picker>
 
         <Picker

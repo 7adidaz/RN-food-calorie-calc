@@ -10,7 +10,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 export default function CameraScreen({ navigation }: CameraProps) {
   const [camera, setCamera] = useState<Camera | null>(null);
   const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [permission, _requestPermission] = Camera.useCameraPermissions();
 
   if (!permission) {
     // Camera permissions are still loading

@@ -10,15 +10,16 @@ interface FoodItemProps {
     carbohydrates_total_g: number;
     name: string;
   };
-  onUpdate: (itemName: string, servingSize: number) => void;
+  onUpdate?: (itemName: string, servingSize: number) => void;
+  isViewOnly?: boolean;
 }
 
-const FoodItem: React.FC<FoodItemProps> = ({ item, onUpdate }) => {
+const FoodItem: React.FC<FoodItemProps> = ({ item, onUpdate, isViewOnly }) => {
   const [servingSize, setServingSize] = useState(item.serving_size_g);
 
   useEffect(() => {
     console.log("servingSize inside", servingSize);
-    onUpdate(item.name, servingSize);
+    onUpdate ?? (item.name, servingSize);
   }, [servingSize]);
 
   return (
@@ -40,14 +41,15 @@ const FoodItem: React.FC<FoodItemProps> = ({ item, onUpdate }) => {
       </View>
       <View style={styles.servingContainer}>
         <Text style={styles.servingLabel}>Serving size</Text>
-        <TextInput
-          value={servingSize.toString()}
-          onChangeText={(text) => setServingSize(parseInt(text) || 0)}
-          keyboardType="numeric"
-          style={styles.servingInput}
-          placeholder="Enter serving size"
-          className="ml-auto mr-2 max-w-xs w-32"
-        />
+        {!isViewOnly ? (
+          <TextInput
+            value={servingSize.toString()}
+            onChangeText={(text) => setServingSize(parseInt(text) || 0)}
+            keyboardType="numeric"
+            style={styles.servingInput}
+            placeholder="Enter serving size"
+            className="ml-auto mr-2 max-w-xs w-32"
+          />) : <Text style={{ padding: 1 }}>{servingSize}</Text>}
         <Text>g</Text>
       </View>
     </View>
@@ -137,6 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "normal",
     textTransform: "capitalize",
+    flex: 2
   },
   servingInput: {
     maxWidth: 80,
