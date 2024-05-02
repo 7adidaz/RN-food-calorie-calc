@@ -1,8 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, Image, StyleSheet, Text, View } from "react-native";
+import { Button, Image, View } from "react-native";
 import { ResultProps } from "../types/types";
-// import { upload } from "cloudinary-react-native";
-import { options, cloud } from "../cloud/cloudinary";
 import styles from "../styles/resultStyles";
 import model from "../cloud/model";
 import { useEffect, useState } from "react";
@@ -20,14 +18,6 @@ export default function Result({ navigation, route }: ResultProps) {
     if (!res) return;
     setItems(res);
   };
-
-  // const handleCalories = async () => {
-  //   console.log("items__", items);
-  //   console.log("items__");
-  //   if (!items) return;
-  //   console.log("not returened");
-  //   await calories(items);
-  // };
 
   useEffect(() => {
     const fetch = async () => {
@@ -54,9 +44,67 @@ export default function Result({ navigation, route }: ResultProps) {
     if (!items) return;
     // await handleUpload();
     await handleModel();
-    // navigation.navigate("NewItems", {
-    //   data: cal,
-    // });
+    navigation.navigate("NewItems", {
+      data: {
+        items: [
+          {
+            calories: 53,
+            carbohydrates_total_g: 13,
+            cholesterol_mg: 0,
+            fat_saturated_g: 0,
+            fat_total_g: 0.1,
+            fiber_g: 1.4,
+            name: "pineapple",
+            potassium_mg: 8,
+            protein_g: 0.5,
+            serving_size_g: 103,
+            sodium_mg: 0,
+            sugar_g: 9.9,
+          },
+          {
+            calories: 84.2,
+            carbohydrates_total_g: 18.5,
+            cholesterol_mg: 0,
+            fat_saturated_g: 0.1,
+            fat_total_g: 1.2,
+            fiber_g: 4.1,
+            name: "pomegranate",
+            potassium_mg: 35,
+            protein_g: 1.7,
+            serving_size_g: 100,
+            sodium_mg: 2,
+            sugar_g: 13.7,
+          },
+          {
+            calories: 84.2,
+            carbohydrates_total_g: 18.5,
+            cholesterol_mg: 0,
+            fat_saturated_g: 0.1,
+            fat_total_g: 1.2,
+            fiber_g: 4.1,
+            name: "pomegranate",
+            potassium_mg: 35,
+            protein_g: 1.7,
+            serving_size_g: 100,
+            sodium_mg: 2,
+            sugar_g: 13.7,
+          }, {
+            calories: 84.2,
+            carbohydrates_total_g: 18.5,
+            cholesterol_mg: 0,
+            fat_saturated_g: 0.1,
+            fat_total_g: 1.2,
+            fiber_g: 4.1,
+            name: "pomegranate",
+            potassium_mg: 35,
+            protein_g: 1.7,
+            serving_size_g: 100,
+            sodium_mg: 2,
+            sugar_g: 13.7,
+          }
+        ],
+      },
+    });
   };
 
   const handleTakeAnotherPicture = () => {

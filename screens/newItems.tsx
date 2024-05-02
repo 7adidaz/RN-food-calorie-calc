@@ -3,11 +3,11 @@ import { NewItemsProps } from "../types/types";
 import { useState, useEffect } from "react";
 import FoodItem from "../components/foodItem";
 import { Button } from "react-native-ui-lib";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function NewItems({ navigation, route }: NewItemsProps) {
-  const [items, setItems] = useState(route.params.data.items);
-  console.log("items_out_", items);
-  const [totalCalories, setTotalCalories] = useState<number>(0);
+export default function NewItems({ route }: NewItemsProps) {
+  const { items } = route.params.data;
+  // console.log("items_out_", items);
 
   const [updatedItems, setUpdatedItems] = useState<
     {
@@ -43,7 +43,7 @@ export default function NewItems({ navigation, route }: NewItemsProps) {
 
   const handleUpdateItem = (itemName: string, servingSize: number) => {
     const updatedItemsCopy = [...updatedItems];
-    const itemToUpdate = items.find((item) => item.name === itemName);
+    const itemToUpdate = items.find((item: any) => item.name === itemName);
     if (!itemToUpdate) return;
     const calculatedValues = calculateTotalValues(itemToUpdate, servingSize);
     const index = updatedItemsCopy.findIndex((item) => item.name === itemName);
@@ -76,7 +76,7 @@ export default function NewItems({ navigation, route }: NewItemsProps) {
     const updateItems = async () => {
       const updatedItemsCopy: typeof updatedItems = [];
       await Promise.all(
-        items.map(async (item) => {
+        items.map(async (item: any) => {
           const calculatedValues = calculateTotalValues(
             item,
             item.serving_size_g
@@ -102,10 +102,18 @@ export default function NewItems({ navigation, route }: NewItemsProps) {
     updateItems();
   }, [items]);
 
+  const handlePress = async () => {
+    const todayDate = new Date().toLocaleString().split(',')[0]
+    const rawData = await AsyncStorage.getItem(todayDate.toString());
+    const newData = { ...JSON.parse(rawData || '{}'), data: items };
+
+    await AsyncStorage.setItem(todayDate.toString(), JSON.stringify(newData));
+  }
+
   return (
     <View className="flex h-full">
       <ScrollView className="p-3">
-        {items?.map((item, index) => (
+        {items?.map((item: any, index: number) => (
           <FoodItem key={index} item={item} onUpdate={handleUpdateItem} />
         ))}
       </ScrollView>
@@ -113,10 +121,10 @@ export default function NewItems({ navigation, route }: NewItemsProps) {
         <View className="flex justify-between flex-row items-center font-medium pt-4 mb-4 ">
           <Text className="text-lg">Total calories </Text>
           <Text className="text-lg">
-            {updatedItems.reduce(
+            {Math.round(updatedItems.reduce(
               (acc, currentItem) => acc + currentItem.total_calories,
               0
-            )}{" "}
+            ))}{" "}
             kcal
           </Text>
         </View>
@@ -126,6 +134,7 @@ export default function NewItems({ navigation, route }: NewItemsProps) {
           background-orange30
           label="Add"
           className="mt-auto"
+          onPress={handlePress}
         />
       </View>
     </View>
