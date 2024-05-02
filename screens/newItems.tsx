@@ -5,9 +5,8 @@ import FoodItem from "../components/foodItem";
 import { Button } from "react-native-ui-lib";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function NewItems({ route }: NewItemsProps) {
+export default function NewItems({ navigation, route }: NewItemsProps) {
   const { items } = route.params.data;
-  // console.log("items_out_", items);
 
   const [updatedItems, setUpdatedItems] = useState<
     {
@@ -103,18 +102,22 @@ export default function NewItems({ route }: NewItemsProps) {
   }, [items]);
 
   const handlePress = async () => {
-    const todayDate = new Date().toLocaleString().split(',')[0]
-    const rawData = await AsyncStorage.getItem(todayDate.toString());
-    const newData = { ...JSON.parse(rawData || '{}'), data: items };
+    console.log("updatedItems", updatedItems);
+    const todayDate = new Date().toLocaleString().split(',')[0];
+    const rawData = await AsyncStorage.getItem(todayDate);
+    console.log('rawData', rawData);
+    const newData = [...JSON.parse(rawData || '[]'), ...updatedItems];
+    console.log('newData', newData);
+    await AsyncStorage.setItem(todayDate, JSON.stringify(newData));
 
-    await AsyncStorage.setItem(todayDate.toString(), JSON.stringify(newData));
+    // navigation.navigate("History");
   }
 
   return (
     <View className="flex h-full">
       <ScrollView className="p-3">
         {items?.map((item: any, index: number) => (
-          <FoodItem key={index} item={item} onUpdate={handleUpdateItem} />
+          <FoodItem key={index} item={item} onUpdate={handleUpdateItem} isViewOnly={false} />
         ))}
       </ScrollView>
       <View className=" border-t border-slate-300 pb-3 px-5">
