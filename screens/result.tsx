@@ -1,10 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, Image, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { ResultProps } from "../types/types";
 import styles from "../styles/resultStyles";
 import model from "../cloud/model";
 import { useEffect, useState } from "react";
 import calories from "../cloud/calorieNinjas";
+import { Button } from "react-native-ui-lib";
 
 export default function Result({ navigation, route }: ResultProps) {
   const { image } = route.params;
@@ -17,6 +18,11 @@ export default function Result({ navigation, route }: ResultProps) {
     const res = await model(image.base64);
     if (!res) return;
     setItems(res);
+    // if (res) {
+    //   console.log(res);
+    //   navigation.navigate("NewItems", {
+    //     data: cal,
+    //   });
   };
 
   useEffect(() => {
@@ -40,7 +46,7 @@ export default function Result({ navigation, route }: ResultProps) {
     fetch();
   }, [items]);
 
-  const goToHistory = async () => {
+  const goToItems = async () => {
     if (!items) return;
     // await handleUpload();
     await handleModel();
@@ -88,7 +94,8 @@ export default function Result({ navigation, route }: ResultProps) {
             serving_size_g: 100,
             sodium_mg: 2,
             sugar_g: 13.7,
-          }, {
+          },
+          {
             calories: 84.2,
             carbohydrates_total_g: 18.5,
             cholesterol_mg: 0,
@@ -101,7 +108,7 @@ export default function Result({ navigation, route }: ResultProps) {
             serving_size_g: 100,
             sodium_mg: 2,
             sugar_g: 13.7,
-          }
+          },
         ],
       },
     });
@@ -115,9 +122,9 @@ export default function Result({ navigation, route }: ResultProps) {
     <View style={styles.container}>
       <Image style={styles.image} source={{ uri: image.uri }} />
       <View style={styles.buttonContainer}>
-        <Button title="Use" onPress={goToHistory} />
+        <Button label={"Use"} onPress={goToItems} />
         <Button
-          title="Take Another Picture"
+          label={"Take Another Picture"}
           onPress={handleTakeAnotherPicture}
         />
         <StatusBar style="auto" />

@@ -1,11 +1,12 @@
 import { Camera, CameraType } from "expo-camera";
 import { useState } from "react";
-import { Button, View } from "react-native";
+import { View } from "react-native";
 import { CameraProps } from "../types/types";
 import styles from "../styles/cameraStyles";
 import CameraPermissions from "../components/cameraPermission";
 import { deleteAsync, getInfoAsync } from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
+import { Button } from "react-native-ui-lib";
 
 export default function CameraScreen({ navigation }: CameraProps) {
   const [camera, setCamera] = useState<Camera | null>(null);
@@ -39,7 +40,7 @@ export default function CameraScreen({ navigation }: CameraProps) {
     const manipResult = await ImageManipulator.manipulateAsync(
       res.uri,
       [{ flip: ImageManipulator.FlipType.Vertical }],
-      { compress: 0.6, format: ImageManipulator.SaveFormat.JPEG, base64: true }
+      { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG, base64: true }
     );
     deleteAsync(res.uri, { idempotent: true });
 
@@ -62,8 +63,12 @@ export default function CameraScreen({ navigation }: CameraProps) {
       >
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
-            <Button title="Flip Camera" onPress={toggleCameraType} />
-            <Button title="take a picture" onPress={capture} />
+            <Button
+              label={"Flip Camera"}
+              onPress={toggleCameraType}
+              className="mb-3"
+            />
+            <Button label={"Take a picture"} onPress={capture} />
           </View>
         </View>
       </Camera>
