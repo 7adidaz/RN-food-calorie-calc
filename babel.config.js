@@ -1,5 +1,5 @@
 module.exports = {
-  presets: ["babel-preset-expo"],
+  presets: ["module:metro-react-native-babel-preset", "babel-preset-expo"],
   plugins: [
     "nativewind/babel",
     [
@@ -8,5 +8,6 @@ module.exports = {
         extensions: [".tsx", ".ts", ".js", ".json"],
       },
     ],
+    "react-native-reanimated/plugin",
   ],
 };
