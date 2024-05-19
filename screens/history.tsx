@@ -78,6 +78,10 @@ export default function History({ navigation }: HistoryProps) {
     navigation.navigate("Camera");
   };
 
+  const goToSensores = () => {
+    navigation.navigate("Sensors");
+  };
+
   const goToonboarding = () => {
     navigation.navigate("NewItems", {
       data: {
@@ -151,7 +155,12 @@ export default function History({ navigation }: HistoryProps) {
     <View>
       <View className="flex bg-slate-50 h-full w-full">
         <View className="flex flex-row justify-between w-full">
-          <DatePicker goToCamera={goToCamera} date={date} setDate={setDate} />
+          <DatePicker
+            goToCamera={goToCamera}
+            date={date}
+            setDate={setDate}
+            goToSensores={goToSensores}
+          />
         </View>
         <TotalCard
           totalCal={Number(totalCal)}
