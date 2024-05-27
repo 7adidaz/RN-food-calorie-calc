@@ -19,7 +19,7 @@ export default function Onboarding({ navigation }: OnboardingProps) {
   ));
 
   const MAX_HEIGHT = 250;
-  const MIN_HEIGHT = 100;
+  const MIN_HEIGHT = 70;
   const heightItems = Array.from(
     { length: MAX_HEIGHT - MIN_HEIGHT + 1 },
     (_, i) => (
@@ -79,8 +79,8 @@ export default function Onboarding({ navigation }: OnboardingProps) {
 
         <Picker
           floatingPlaceholder
-          label="Height"
-          placeholder="Height"
+          label="Height (cm)"
+          placeholder="Height (cm)"
           useWheelPicker
           defaultValue=""
           value={userData.height}
@@ -92,8 +92,8 @@ export default function Onboarding({ navigation }: OnboardingProps) {
 
         <Picker
           floatingPlaceholder
-          label="Weight"
-          placeholder="Weight"
+          label="Weight (kg)"
+          placeholder="Weight (kg)"
           useWheelPicker
           defaultValue=""
           value={userData.weight}
