@@ -8,6 +8,7 @@ import Result from "./screens/result";
 import { RootStackParamList } from "./types/types";
 import Onboarding from "./screens/onboarding";
 import NewItems from "./screens/newItems";
+import Sensors from "./screens/sensors";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -20,6 +21,7 @@ function App() {
         <Stack.Screen name="Result" component={Result} />
         <Stack.Screen name="Onboarding" component={Onboarding} />
         <Stack.Screen name="NewItems" component={NewItems} />
+        <Stack.Screen name="Sensors" component={Sensors} />
       </Stack.Navigator>
     </NavigationContainer>
   );

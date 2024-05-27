@@ -1,25 +1,21 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Calendar, Camera } from "iconoir-react-native";
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { SafeAreaView, Text, View, TouchableOpacity } from "react-native";
 
 interface PickDateProps {
   date: Date;
   setDate: (date: Date) => void;
   goToCamera: () => void;
+  goToSensores: () => void;
 }
 
 export default function DatePicker({
   date,
   setDate,
   goToCamera,
+  goToSensores,
 }: PickDateProps) {
-
   const [show, setShow] = useState(false);
 
   const onChange = (_: any, selectedDate: any) => {
@@ -53,6 +49,14 @@ export default function DatePicker({
         >
           <Camera color="white" height={16} width={16} />
           <Text className="text-white"> Add</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={goToSensores}
+          className="  bg-orange-700  flex flex-row items-center p-2 rounded-full px-4"
+        >
+          <Camera color="white" height={16} width={16} />
+          <Text className="text-white"> sensors</Text>
         </TouchableOpacity>
       </View>
 

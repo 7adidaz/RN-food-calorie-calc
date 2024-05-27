@@ -9,6 +9,7 @@ export type CameraResult = {
 export type RootStackParamList = {
   History: undefined;
   Camera: undefined;
+  Sensors: undefined;
   Result: {
     image: CameraResult;
   };
@@ -23,6 +24,11 @@ export type HistoryProps = NativeStackScreenProps<
   "History"
 >;
 export type CameraProps = NativeStackScreenProps<RootStackParamList, "Camera">;
+export type SensorsProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Sensors"
+>;
+
 export type ResultProps = NativeStackScreenProps<RootStackParamList, "Result">;
 export type NewItemsProps = NativeStackScreenProps<
   RootStackParamList,
